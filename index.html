@@ -123,7 +123,7 @@
       gap: 0.6rem;
     }
 
-    /* Main Blue Buttons */
+    /* Main Blue Buttons (BIM 360) */
     .btn-solid {
       display: flex;
       align-items: center;
@@ -142,8 +142,8 @@
       background-color: #123c6d;
     }
 
-    /* Secondary Blue Buttons for Submenu Links */
-    .btn-sublink {
+    /* Secondary Blue Buttons (BIM 360 Sublinks) */
+    .btn-sublink-blue {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -157,8 +157,27 @@
       transition: background-color 0.2s ease;
     }
 
-    .btn-sublink:hover {
+    .btn-sublink-blue:hover {
       background-color: #2f5f7a;
+    }
+
+    /* Dark Charcoal Buttons (Cesel Sublinks) */
+    .btn-sublink-dark {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #334155;
+      color: #ffffff;
+      padding: 0.65rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-sublink-dark:hover {
+      background-color: #1e293b;
     }
 
     .btn-content {
@@ -187,6 +206,7 @@
       background-color: #e2e8f0;
     }
 
+    /* Default state: HIDDEN (Cerrados al inicio) */
     .accordion-content {
       display: none;
       flex-direction: column;
@@ -280,39 +300,39 @@
 
           <!-- DESPLEGABLE 1: EXPEDIENTES APROBADOS POR ENTREGABLE -->
           <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion('acc-1', 'icon-1')">
+            <div class="accordion-header" onclick="toggleAccordion('bim-acc-1', 'bim-icon-1')">
               <div>
                 <i class="fa-regular fa-folder" style="margin-right: 0.5rem; color: #475569;"></i>
                 <span>Expedientes Aprobados por Entregable</span>
               </div>
-              <i class="fa-solid fa-chevron-down" id="icon-1"></i>
+              <i class="fa-solid fa-chevron-down" id="bim-icon-1"></i>
             </div>
-            <div class="accordion-content active" id="acc-1">
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co._bxwldVjTjCWdSr9qzq80w" target="_blank" class="btn-sublink">
+            <div class="accordion-content" id="bim-acc-1">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co._bxwldVjTjCWdSr9qzq80w" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 04 – UT01</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.F0oCsmu2Tbqz2K26ot7njA" target="_blank" class="btn-sublink">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.F0oCsmu2Tbqz2K26ot7njA" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 06 – UT03</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.ggfsF_I5Qu2VY_oOf8eH4g" target="_blank" class="btn-sublink">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.ggfsF_I5Qu2VY_oOf8eH4g" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 07 – UT03</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.2rU4r4SXSCCoHMJwnAq2_Q" target="_blank" class="btn-sublink">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.2rU4r4SXSCCoHMJwnAq2_Q" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 08 – UT04</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.OBF_Z61oQWmixn-6PW8rNA" target="_blank" class="btn-sublink">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.OBF_Z61oQWmixn-6PW8rNA" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 10 – UT05</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.ZW4EYjFATS2j-LV1PfI_Ew" target="_blank" class="btn-sublink">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.ZW4EYjFATS2j-LV1PfI_Ew" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 11 – UT06</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.pEgN5TLuTqG94Rdtk8PhZA" target="_blank" class="btn-sublink">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.pEgN5TLuTqG94Rdtk8PhZA" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 12 – UT07</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
@@ -321,35 +341,35 @@
 
           <!-- DESPLEGABLE 2: LISTADO DE PLANOS ET -->
           <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion('acc-2', 'icon-2')">
+            <div class="accordion-header" onclick="toggleAccordion('bim-acc-2', 'bim-icon-2')">
               <div>
                 <i class="fa-regular fa-folder" style="margin-right: 0.5rem; color: #475569;"></i>
                 <span>Listado de Planos ET</span>
               </div>
-              <i class="fa-solid fa-chevron-down" id="icon-2"></i>
+              <i class="fa-solid fa-chevron-down" id="bim-icon-2"></i>
             </div>
-            <div class="accordion-content active" id="acc-2">
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.F0oCsmu2Tbqz2K26ot7njA" target="_blank" class="btn-sublink">
+            <div class="accordion-content" id="bim-acc-2">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.F0oCsmu2Tbqz2K26ot7njA" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 06 – UT03</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.ggfsF_I5Qu2VY_oOf8eH4g" target="_blank" class="btn-sublink">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.ggfsF_I5Qu2VY_oOf8eH4g" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 07 – UT03</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.2rU4r4SXSCCoHMJwnAq2_Q" target="_blank" class="btn-sublink">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.2rU4r4SXSCCoHMJwnAq2_Q" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 08 – UT04</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.OBF_Z61oQWmixn-6PW8rNA" target="_blank" class="btn-sublink">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.OBF_Z61oQWmixn-6PW8rNA" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 10 – UT05</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.ZW4EYjFATS2j-LV1PfI_Ew" target="_blank" class="btn-sublink">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.ZW4EYjFATS2j-LV1PfI_Ew" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 11 – UT06</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
-              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.pEgN5TLuTqG94Rdtk8PhZA" target="_blank" class="btn-sublink">
+              <a href="https://docs.b360.autodesk.com/projects/5596e688-2f4f-4ad2-ac25-1c6ec598428a/folders/urn:adsk.wipprod:fs.folder:co.pEgN5TLuTqG94Rdtk8PhZA" target="_blank" class="btn-sublink-blue">
                 <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Entregable 12 – UT07</span></div>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>
@@ -374,22 +394,103 @@
         </div>
 
         <div class="link-list" id="cesel-list">
-          <div class="accordion-header">
-            <div><i class="fa-regular fa-user" style="margin-right: 0.5rem; color: #475569;"></i><span>SharePoint – Control de Contratos</span></div>
-            <i class="fa-solid fa-chevron-down"></i>
+          
+          <!-- SHAREPOINT: CONTROL DE CONTRATOS -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('cesel-acc-1', 'cesel-icon-1')">
+              <div>
+                <i class="fa-regular fa-user" style="margin-right: 0.5rem; color: #475569;"></i>
+                <span>SharePoint – Control de Contratos</span>
+              </div>
+              <i class="fa-solid fa-chevron-down" id="cesel-icon-1"></i>
+            </div>
+            <div class="accordion-content" id="cesel-acc-1">
+              <a href="https://owa.cesel.com.pe:7005/contratos/240800/Elaboracin%20de%20documentos/00.%20Doc%20SGI/2%20Obra/02.%20Control%20de%20Contrato" target="_blank" class="btn-sublink-dark">
+                <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Control de Contrato Supervisión</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+              <a href="https://owa.cesel.com.pe:7005/contratos/240800/Archivos%20recibidos%20del%20Cliente/00%20Contractual%20Contratista" target="_blank" class="btn-sublink-dark">
+                <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Control de Contrato del Contratista</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+            </div>
           </div>
-          <div class="accordion-header">
-            <div><i class="fa-regular fa-user" style="margin-right: 0.5rem; color: #475569;"></i><span>SharePoint – Elaboración de Documentos</span></div>
-            <i class="fa-solid fa-chevron-down"></i>
+
+          <!-- SHAREPOINT: ELABORACIÓN DE DOCUMENTOS -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('cesel-acc-2', 'cesel-icon-2')">
+              <div>
+                <i class="fa-regular fa-user" style="margin-right: 0.5rem; color: #475569;"></i>
+                <span>SharePoint – Elaboración de Documentos</span>
+              </div>
+              <i class="fa-solid fa-chevron-down" id="cesel-icon-2"></i>
+            </div>
+            <div class="accordion-content" id="cesel-acc-2">
+              <a href="https://owa.cesel.com.pe:7005/contratos/240800/Elaboracin%20de%20documentos/01.%20Cartas" target="_blank" class="btn-sublink-dark">
+                <div class="btn-content"><i class="fa-regular fa-envelope"></i><span>Cartas</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+              <a href="https://owa.cesel.com.pe:7005/contratos/240800/Elaboracin%20de%20documentos/04.%20Informes%20T%C3%A9cnicos" target="_blank" class="btn-sublink-dark">
+                <div class="btn-content"><i class="fa-regular fa-file-lines"></i><span>Informes Técnicos</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+              <a href="https://owa.cesel.com.pe:7005/contratos/240800/Elaboracin%20de%20documentos/03.%20Informes%20Semanales" target="_blank" class="btn-sublink-dark">
+                <div class="btn-content"><i class="fa-regular fa-calendar-days"></i><span>Informes Semanales</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+              <a href="https://owa.cesel.com.pe:7005/contratos/240800/Elaboracin%20de%20documentos/06.%20Informes%20Mensuales" target="_blank" class="btn-sublink-dark">
+                <div class="btn-content"><i class="fa-regular fa-calendar-days"></i><span>Informes Mensuales</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+              <a href="https://owa.cesel.com.pe:7005/contratos/240800/Elaboracin%20de%20documentos/10.%20Actas%20de%20Reuni%C3%B3n" target="_blank" class="btn-sublink-dark">
+                <div class="btn-content"><i class="fa-regular fa-clipboard"></i><span>Actas de Reunión</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+              <a href="https://owa.cesel.com.pe:7005/contratos/240800/Elaboracin%20de%20documentos/10%20Fotos" target="_blank" class="btn-sublink-dark">
+                <div class="btn-content"><i class="fa-regular fa-image"></i><span>Fotos</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+            </div>
           </div>
-          <div class="accordion-header">
-            <div><i class="fa-regular fa-user" style="margin-right: 0.5rem; color: #475569;"></i><span>SharePoint – Recibidos del Contratista</span></div>
-            <i class="fa-solid fa-chevron-down"></i>
+
+          <!-- SHAREPOINT: RECIBIDOS DEL CONTRATISTA -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('cesel-acc-3', 'cesel-icon-3')">
+              <div>
+                <i class="fa-regular fa-user" style="margin-right: 0.5rem; color: #475569;"></i>
+                <span>SharePoint – Recibidos del Contratista</span>
+              </div>
+              <i class="fa-solid fa-chevron-down" id="cesel-icon-3"></i>
+            </div>
+            <div class="accordion-content" id="cesel-acc-3">
+              <a href="https://owa.cesel.com.pe:7005/contratos/240800/RecibidosDelContratista/00%20Cartas" target="_blank" class="btn-sublink-dark">
+                <div class="btn-content"><i class="fa-regular fa-envelope"></i><span>Cartas Recibidas</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+              <a href="https://owa.cesel.com.pe:7005/contratos/240800/RecibidosDelContratista/02%20Obra" target="_blank" class="btn-sublink-dark">
+                <div class="btn-content"><i class="fa-regular fa-folder"></i><span>Reportes y Lookahead de Obra</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+            </div>
           </div>
-          <div class="accordion-header">
-            <div><i class="fa-regular fa-user" style="margin-right: 0.5rem; color: #475569;"></i><span>SharePoint – Enviados al Contratista</span></div>
-            <i class="fa-solid fa-chevron-down"></i>
+
+          <!-- SHAREPOINT: ENVIADOS AL CONTRATISTA -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion('cesel-acc-4', 'cesel-icon-4')">
+              <div>
+                <i class="fa-regular fa-user" style="margin-right: 0.5rem; color: #475569;"></i>
+                <span>SharePoint – Enviados al Contratista</span>
+              </div>
+              <i class="fa-solid fa-chevron-down" id="cesel-icon-4"></i>
+            </div>
+            <div class="accordion-content" id="cesel-acc-4">
+              <a href="https://owa.cesel.com.pe:7005/contratos/240800/EnviadosAlContratista/00%20Cartas" target="_blank" class="btn-sublink-dark">
+                <div class="btn-content"><i class="fa-regular fa-paper-plane"></i><span>Cartas Enviadas</span></div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+            </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -408,14 +509,47 @@
     function filterLinks(input, listId) {
       const filter = input.value.toLowerCase();
       const list = document.getElementById(listId);
-      const items = list.querySelectorAll('a');
+      const accordionItems = list.querySelectorAll('.accordion-item');
+      const directLinks = list.querySelectorAll('.btn-solid');
 
-      items.forEach(item => {
-        const text = item.textContent || item.innerText;
+      // Filtrar enlaces directos (BIM 360)
+      directLinks.forEach(link => {
+        const text = link.textContent || link.innerText;
         if (text.toLowerCase().indexOf(filter) > -1) {
-          item.style.display = "flex";
+          link.style.display = "flex";
+        } else {
+          link.style.display = "none";
+        }
+      });
+
+      // Filtrar dentro de acordeones
+      accordionItems.forEach(item => {
+        const headerText = item.querySelector('.accordion-header').textContent.toLowerCase();
+        const subLinks = item.querySelectorAll('a');
+        let matchFound = headerText.indexOf(filter) > -1;
+
+        subLinks.forEach(sub => {
+          const subText = sub.textContent.toLowerCase();
+          if (subText.indexOf(filter) > -1) {
+            sub.style.display = "flex";
+            matchFound = true;
+          } else {
+            sub.style.display = "none";
+          }
+        });
+
+        if (matchFound) {
+          item.style.display = "block";
+          if (filter !== "") {
+            item.querySelector('.accordion-content').classList.add('active');
+          }
         } else {
           item.style.display = "none";
+        }
+
+        if (filter === "") {
+          item.querySelector('.accordion-content').classList.remove('active');
+          subLinks.forEach(sub => sub.style.display = "flex");
         }
       });
     }
