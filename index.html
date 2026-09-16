@@ -3,132 +3,346 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de Enlaces</title>
+  <title>EOPNP - SUPERVISIÓN | Panel Central de Enlaces</title>
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
-      background-color: #0f172a;
-      color: #f8fafc;
+      background-color: #f4f8f9;
+      color: #2b3a4a;
+      padding: 2rem;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem;
     }
 
+    /* HEADER */
     .header {
-      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
       margin-bottom: 2.5rem;
+      padding-bottom: 1rem;
     }
 
-    .header h1 {
+    .logo-container {
+      border-right: 2px solid #cbd5e1;
+      padding-right: 1.5rem;
+    }
+
+    .logo-container img {
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .header-text h1 {
       font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-      color: #ffffff;
+      font-weight: 700;
+      color: #1a4175;
+      letter-spacing: -0.5px;
     }
 
-    .header p {
-      color: #94a3b8;
+    .header-text p {
+      color: #64748b;
       font-size: 0.95rem;
     }
 
-    .container {
-      width: 100%;
-      max-width: 500px;
+    /* GRID LAYOUT */
+    .main-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .column-title {
       display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .category {
-      background-color: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 1.25rem;
-    }
-
-    .category h2 {
-      font-size: 1.1rem;
-      color: #38bdf8;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #2c4b6e;
       margin-bottom: 1rem;
-      border-bottom: 1px solid #334155;
-      padding-bottom: 0.5rem;
     }
 
-    .button-group {
+    .column-title i {
+      color: #2c4b6e;
+      font-size: 1.2rem;
+    }
+
+    /* CARDS */
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e2e8f0;
+    }
+
+    /* SEARCH INPUT */
+    .search-box {
+      position: relative;
+      margin-bottom: 1.25rem;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.55rem 0.75rem 0.55rem 2.2rem;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      color: #334155;
+      outline: none;
+    }
+
+    .search-box input::placeholder {
+      color: #94a3b8;
+    }
+
+    /* LINKS & BUTTONS */
+    .link-list {
       display: flex;
       flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    /* Primary Solid Blue Buttons */
+    .btn-solid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #1a5293;
+      color: #ffffff;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.88rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-solid:hover {
+      background-color: #123c6d;
+    }
+
+    .btn-content {
+      display: flex;
+      align-items: center;
       gap: 0.75rem;
     }
 
-    .btn {
-      display: block;
-      width: 100%;
-      padding: 0.85rem 1rem;
-      background-color: #0f172a;
-      color: #f1f5f9;
+    .btn-content i {
+      font-size: 0.95rem;
+    }
+
+    /* Secondary Accordion / List Items */
+    .btn-accordion {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0.5rem;
+      color: #334155;
       text-decoration: none;
-      text-align: center;
-      font-weight: 500;
-      border-radius: 8px;
-      border: 1px solid #475569;
-      transition: all 0.2s ease;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-bottom: 1px solid #f1f5f9;
+      transition: color 0.2s ease, background 0.2s ease;
     }
 
-    .btn:hover {
-      background-color: #0284c7;
-      border-color: #38bdf8;
-      color: #ffffff;
-      transform: translateY(-2px);
+    .btn-accordion:hover {
+      color: #1a5293;
+      background-color: #f8fafc;
     }
 
-    footer {
-      margin-top: auto;
-      padding-top: 2rem;
+    .btn-accordion i.icon-main {
       color: #64748b;
-      font-size: 0.85rem;
+      margin-right: 0.6rem;
+    }
+
+    .btn-accordion i.icon-arrow {
+      color: #94a3b8;
+      font-size: 0.75rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .logo-container {
+        border-right: none;
+        border-bottom: 2px solid #cbd5e1;
+        padding-right: 0;
+        padding-bottom: 0.75rem;
+        width: 100%;
+      }
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1>PANEL DE ENLACES</h1>
-    <p>Accesos directos del proyecto</p>
-  </div>
-
-  <div class="container">
-
-    <!-- SECCIÓN 1 -->
-    <div class="category">
-      <h2>BIM 360 & Modelos</h2>
-      <div class="button-group">
-        <a href="https://docs.b360.autodesk.com" target="_blank" class="btn">Planos de Obra Aprobados</a>
-        <a href="https://docs.b360.autodesk.com" target="_blank" class="btn">Modelos de Construcción</a>
-        <a href="https://model.b360.autodesk.com" target="_blank" class="btn">Modelos de Coordinación BIM</a>
-      </div>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="https://www.cesel.com.pe/wp-content/uploads/2021/08/logo-cesel.png" alt="CESEL Ingenieros Logo">
     </div>
-
-    <!-- SECCIÓN 2 -->
-    <div class="category">
-      <h2>Documentación del Proyecto</h2>
-      <div class="button-group">
-        <a href="https://google.com" target="_blank" class="btn">Manual de Gestión BIM</a>
-        <a href="https://google.com" target="_blank" class="btn">Especificaciones Técnicas</a>
-      </div>
+    <div class="header-text">
+      <h1>EOPNP - SUPERVISIÓN</h1>
+      <p>Panel Central de Enlaces del Proyecto</p>
     </div>
+  </header>
 
-  </div>
+  <!-- MAIN CONTENT GRID -->
+  <main class="main-grid">
 
-  <footer>
-    <p>SuperLink Hub © 2026</p>
-  </footer>
+    <!-- COLUMNA 1: BIM 360 -->
+    <section>
+      <div class="column-title">
+        <i class="fa-solid fa-globe"></i>
+        <h2>BIM 360</h2>
+      </div>
 
+      <div class="card">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar enlace..." onkeyup="filterLinks(this, 'bim-list')">
+        </div>
+
+        <div class="link-list" id="bim-list">
+          <!-- Botones Azules Principales -->
+          <a href="https://docs.b360.autodesk.com" target="_blank" class="btn-solid">
+            <div class="btn-content">
+              <i class="fa-solid fa-map"></i>
+              <span>Planos de Obra Aprobados</span>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+
+          <a href="https://docs.b360.autodesk.com" target="_blank" class="btn-solid">
+            <div class="btn-content">
+              <i class="fa-solid fa-cube"></i>
+              <span>Modelos de Construcción</span>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+
+          <a href="https://model.b360.autodesk.com" target="_blank" class="btn-solid">
+            <div class="btn-content">
+              <i class="fa-solid fa-cubes"></i>
+              <span>Modelos de Coordinación BIM</span>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+
+          <!-- Lista con flecha hacia abajo -->
+          <a href="#" class="btn-accordion">
+            <div>
+              <i class="fa-regular fa-folder icon-main"></i>
+              <span>Expedientes Aprobados por Entregable</span>
+            </div>
+            <i class="fa-solid fa-chevron-down icon-arrow"></i>
+          </a>
+
+          <a href="#" class="btn-accordion">
+            <div>
+              <i class="fa-regular fa-folder icon-main"></i>
+              <span>Listado de Planos ET</span>
+            </div>
+            <i class="fa-solid fa-chevron-down icon-arrow"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLUMNA 2: Entorno Cesel -->
+    <section>
+      <div class="column-title">
+        <i class="fa-solid fa-city"></i>
+        <h2>Entorno Cesel</h2>
+      </div>
+
+      <div class="card">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar enlace..." onkeyup="filterLinks(this, 'cesel-list')">
+        </div>
+
+        <div class="link-list" id="cesel-list">
+          <a href="#" class="btn-accordion">
+            <div>
+              <i class="fa-regular fa-user icon-main"></i>
+              <span>SharePoint – Control de Contratos</span>
+            </div>
+            <i class="fa-solid fa-chevron-down icon-arrow"></i>
+          </a>
+
+          <a href="#" class="btn-accordion">
+            <div>
+              <i class="fa-regular fa-user icon-main"></i>
+              <span>SharePoint – Elaboración de Documentos</span>
+            </div>
+            <i class="fa-solid fa-chevron-down icon-arrow"></i>
+          </a>
+
+          <a href="#" class="btn-accordion">
+            <div>
+              <i class="fa-regular fa-user icon-main"></i>
+              <span>SharePoint – Recibidos del Contratista</span>
+            </div>
+            <i class="fa-solid fa-chevron-down icon-arrow"></i>
+          </a>
+
+          <a href="#" class="btn-accordion">
+            <div>
+              <i class="fa-regular fa-user icon-main"></i>
+              <span>SharePoint – Enviados al Contratista</span>
+            </div>
+            <i class="fa-solid fa-chevron-down icon-arrow"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Función JS para filtrar enlaces en tiempo real -->
+  <script>
+    function filterLinks(input, listId) {
+      const filter = input.value.toLowerCase();
+      const list = document.getElementById(listId);
+      const items = list.querySelectorAll('a');
+
+      items.forEach(item => {
+        const text = item.textContent || item.innerText;
+        if (text.toLowerCase().indexOf(filter) > -1) {
+          item.style.display = "flex";
+        } else {
+          item.style.display = "none";
+        }
+      });
+    }
+  </script>
 </body>
 </html>
