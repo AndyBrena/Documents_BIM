@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buscador de registros</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{--bg:#f4f6f9;--card:#fff;--tx:#1b2330;--mut:#6a7587;--bd:#dde1e8;--ac:#1f7a4d;--acbg:#e3f3ea;--hl:#ffef9a;--bl:#2f6fd6;--blbg:#e6efff;--pu:#7a45c2;--pubg:#f0e8fb}
+@media(prefers-color-scheme:dark){:root{--bg:#12151a;--card:#1c2027;--tx:#e8ebf0;--mut:#98a2b3;--bd:#313844;--ac:#4cc38a;--acbg:#1c3a2b;--hl:#6b5700;--bl:#7fb0ff;--blbg:#1d2f52;--pu:#c3a0f5;--pubg:#31244a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,Segoe UI,Arial,sans-serif}
+.wrap{max-width:1560px;margin:auto;padding:18px}
+.hide{display:none!important}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
+button,.btn{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;padding:8px 13px;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{border-color:var(--ac)}
+.pri{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
+.pri:hover{filter:brightness(1.08)}
+/* bienvenida */
+#welcome{text-align:center;padding:50px 10px}
+#welcome h1{font-size:30px;margin:0 0 8px}
+.steps{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:28px 0}
+.step{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;width:250px}
+.step b{display:block;font-size:34px}
+.big{font-size:18px;padding:15px 30px;border-radius:14px}
+#welcome.over,.dragging #welcome{outline:3px dashed var(--ac);outline-offset:-10px}
+.mut{color:var(--mut)}
+#saved{margin-top:16px}
+/* barra */
+.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:12px}
+.top h1{font-size:19px;margin:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:12px}
+.kpi{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 14px}
+.kpi b{font-size:24px;display:block}
+.kpi span{font-size:12px;color:var(--mut)}
+/* buscador */
+#q{width:100%;font:inherit;font-size:19px;padding:15px 18px;border:2px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx)}
+#q:focus{outline:none;border-color:var(--ac)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;min-height:6px}
+.chip{background:var(--acbg);color:var(--ac);border-radius:999px;padding:3px 6px 3px 12px;font-size:13px;font-weight:600;display:inline-flex;gap:6px;align-items:center}
+.chip i{font-style:normal;cursor:pointer;background:var(--card);border-radius:50%;width:18px;height:18px;text-align:center;line-height:18px}
+.hint{font-size:12.5px;color:var(--mut);margin-top:8px}
+.fl{margin-top:12px}
+.fl .lbl{font-size:12px;color:var(--mut);margin:8px 0 4px;text-transform:uppercase;letter-spacing:.04em}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{padding:5px 11px;border-radius:999px;font-size:13.5px}
+.opt.on{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:600}
+.opt.off{opacity:.35}
+select{font:inherit;padding:5px 8px;border:1px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx)}
+/* panel */
+.bars{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.bar{display:grid;grid-template-columns:78px 1fr 30px;gap:8px;align-items:center;font-size:13px;cursor:pointer;padding:2px 0}
+.bar .t{height:12px;background:var(--bd);border-radius:6px;overflow:hidden}
+.bar .t i{display:block;height:100%;background:var(--ac);border-radius:6px}
+.bar.on{font-weight:700}.bar.on .t i{background:var(--bl)}
+.bar:hover .t i{filter:brightness(1.15)}
+details summary{cursor:pointer;font-weight:600}
+/* resultados */
+.rh{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
+.rh b{font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.cd{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.cd:hover{border-color:var(--ac);box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.ct{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.cd h3{margin:0;font-size:17px;word-break:break-word}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{background:var(--blbg);color:var(--bl);border-radius:8px;padding:2px 9px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.tag.e{background:var(--pubg);color:var(--pu)}
+.tag.m{background:var(--acbg);color:var(--ac)}
+.pg{font-size:15px}
+.rg mark{background:var(--hl);color:inherit;border-radius:4px;padding:1px 5px;font-weight:700}
+.nm{font-size:12px;color:var(--mut);word-break:break-all}
+.ac{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.ac .btn,.ac button{font-size:13px;padding:7px 11px}
+.ac .pri{flex:1 1 100%;text-align:center;font-size:15px;padding:10px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:980px;table-layout:fixed;background:var(--card)}
+th,td{padding:9px 10px;border-bottom:1px solid var(--bd);text-align:left;vertical-align:top;word-break:break-word}
+th{font-size:12px;color:var(--mut);text-transform:uppercase}
+.empty{text-align:center;padding:40px;color:var(--mut)}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none;z-index:9}
+#toast.on{opacity:1}
+/* layout lateral */
+.layout{display:grid;grid-template-columns:310px minmax(0,1fr);gap:14px;align-items:start}
+.side{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;margin:0}
+.side .fl{margin-top:8px}
+.main{min-width:0}
+.sum{padding:12px 14px}
+.sum .kpis{margin-bottom:10px}
+.sum .kpi{padding:7px 12px}.sum .kpi b{font-size:21px}
+.sum .bars{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.sum .bar{grid-template-columns:76px 1fr 28px;font-size:12px;padding:1px 0}
+@media(max-width:950px){.layout{grid-template-columns:1fr}.side{position:static;max-height:none}.sum .bars{grid-template-columns:1fr}}
+@media print{.noprint,#welcome{display:none!important}body{background:#fff;color:#000}.cd{break-inside:avoid}}
+</style>
+</head>
+<body>
+<input type="file" id="file" accept=".xlsx,.xlsm,.xls,.csv" class="hide">
+
+<div id="welcome" class="wrap">
+  <h1>🔎 Buscador de registros</h1>
+  <p class="mut">Encuentra en segundos el documento de cualquier página, mes o bloque.</p>
+  <div class="steps">
+    <div class="step"><b>1️⃣</b>Carga tu archivo Excel</div>
+    <div class="step"><b>2️⃣</b>Escribe lo que buscas<br><span class="mut">ej: <i>502 febrero 2025</i></span></div>
+    <div class="step"><b>3️⃣</b>Pulsa “Abrir documento”</div>
+  </div>
+  <button class="big pri" id="pick">📂 Cargar Excel</button>
+  <p class="mut">o arrastra el archivo hasta aquí</p>
+  <div id="saved" class="hide"></div>
+</div>
+
+<div id="app" class="wrap hide">
+  <div class="top noprint">
+    <h1>🔎 Buscador de registros</h1>
+    <div><span class="mut" id="fileinfo"></span> <button id="change">📂 Cambiar Excel</button></div>
+  </div>
+  <div class="layout">
+  <aside class="side card noprint">
+    <input id="q" type="search" placeholder="Escribe: 502 febrero 2025 · acero B24 · UT3 EST …" autocomplete="off">
+    <div class="chips" id="chips"></div>
+    <div class="hint">Entiendo páginas, meses (feb, febrero), años, UT, bloques, especialidades y protocolos. Atajo: pulsa <b>/</b> para buscar.</div>
+    <div class="fl">
+      <div class="lbl">Mes</div><div class="opts" id="fMes"></div>
+      <div class="lbl">Año</div><div class="opts" id="fAnio"></div>
+      <div class="lbl">UT</div><div class="opts" id="fUt"></div>
+      <div class="lbl">Especialidad</div><div class="opts" id="fEsp"></div>
+      <div class="lbl">Bloque</div><div class="opts"><select id="fBloque"></select> <button id="clear">✖ Limpiar todo</button></div>
+    </div>
+  </aside>
+
+  <main class="main">
+  <div class="card noprint sum">
+  <div class="kpis" id="kpis"></div>
+  <details id="dash" open>
+    <summary>📊 Resumen (haz clic en una barra para filtrar)</summary>
+    <div class="bars" id="bars" style="margin-top:12px"></div>
+  </details>
+  </div>
+
+  <div class="rh">
+    <b id="count"></b>
+    <div class="noprint">
+      <button id="vCards" class="opt">▦ Tarjetas</button>
+      <button id="vTable" class="opt on">☰ Tabla</button>
+      <button id="xls">⬇ Excel</button>
+      <button id="pdf">🖨 PDF / Imprimir</button>
+    </div>
+  </div>
+  <div id="results"></div>
+  <div style="text-align:center;margin:14px"><button id="more" class="hide">Mostrar más</button></div>
+  </main>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const MES=['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+const STOP=new Set(['PAG','PAGINA','PAGINAS','DE','DEL','EN','ANO','MES','EL','LA']);
+const KEY='matriz_buscador_v1';
+let rows=[],sel={mes:'',anio:'',ut:'',esp:'',bloque:''},P={val:{},tok:{},txt:[]},cur=[],view='table',shown=48,fname='';
+
+const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toUpperCase();
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),1600)}
+
+/* ---------- lectura del Excel ---------- */
+function parseRange(v){const out=[];String(v??'').split(/[\/,;y]|\s-\s/i).forEach(seg=>{const m=seg.match(/\d+/g);if(!m)return;const a=+m[0],b=m.length>1?+m[m.length-1]:a;out.push([Math.min(a,b),Math.max(a,b)])});return out}
+function fixHref(h){h=String(h||'').trim();if(!h)return '';
+  if(/^[a-z][a-z0-9+.-]*:\/\//i.test(h)||/^(mailto:|#)/i.test(h))return h;
+  if(/^[a-z]:[\\\/]/i.test(h))return 'file:///'+h.replace(/\\/g,'/');
+  if(/^\\\\/.test(h))return 'file:'+h.replace(/\\/g,'/');
+  return h.replace(/\\/g,'/')}
+
+function readWorkbook(buf){
+  const wb=XLSX.read(buf,{type:'array'});let F=null;
+  for(const name of wb.SheetNames){
+    const ws=wb.Sheets[name];if(!ws['!ref'])continue;
+    const rng=XLSX.utils.decode_range(ws['!ref']);
+    for(let r=rng.s.r;r<=Math.min(rng.e.r,rng.s.r+14)&&!F;r++){
+      const map={};
+      for(let c=rng.s.c;c<=rng.e.c;c++){const cell=ws[XLSX.utils.encode_cell({r,c})];if(cell)map[norm(cell.v)]=c}
+      const k=Object.keys(map),col=n=>k.find(x=>x.startsWith(n));
+      if(col('MES')&&col('RANGO'))F={name,ws,rng,hr:r,map,k,col};
+    }
+    if(F)break;
+  }
+  if(!F){alert('No encontré las columnas "MES" y "RANGO DE REGISTROS" en el Excel.');return null}
+  const {ws,rng,hr,map,col,k}=F;
+  const ix=n=>{const x=col(n);return x!=null?map[x]:undefined};
+  const lk=k.find(x=>/^LINK/.test(x)),us=k.find(x=>/^(HIPERV|URL|DIRECCION)/.test(x));
+  const c={mes:ix('MES'),anio:ix('ANO'),rango:ix('RANGO'),link:lk!=null?map[lk]:undefined,url:us!=null?map[us]:undefined,
+    arch:ix('CODIGO BIM')??ix('ARCHIVO'),bloque:ix('BLOQUE'),prot:ix('PROTOCOLO'),ut:ix('UT'),esp:ix('ESPECIALIDAD')};
+  const get=(r,ci)=>{
+    if(ci==null)return {v:'',href:''};
+    const cell=ws[XLSX.utils.encode_cell({r,c:ci})];if(!cell)return {v:'',href:''};
+    let href='';const txt=String(cell.w??cell.v??'').trim();
+    if(cell.l)href=cell.l.Target||(cell.l.Location?'#'+cell.l.Location:'');
+    if(!href&&cell.f){const m=String(cell.f).match(/HYPERLINK\(\s*"([^"]+)"/i);if(m)href=m[1]}
+    return {v:txt,href:fixHref(href)};
+  };
+  const out=[];
+  for(let r=hr+1;r<=rng.e.r;r++){
+    const mes=norm(get(r,c.mes).v),rango=get(r,c.rango).v;
+    if(!mes||mes==='MES'||!rango)continue;
+    const l=get(r,c.link),a=get(r,c.arch),u=get(r,c.url);
+    const url=[u.href,u.v,l.href,l.v].find(v=>/^(https?:|file:)/i.test(v||''))||'';
+    out.push({mes,anio:get(r,c.anio).v,rango,segs:parseRange(rango),ut:get(r,c.ut).v,bloque:get(r,c.bloque).v,esp:get(r,c.esp).v,
+      prot:get(r,c.prot).v,file:a.v||l.v,linkTxt:/^https?:/i.test(l.v)?'':l.v,href:url});
+  }
+  return out;
+}
+
+function setData(data,name,save){
+  rows=data;fname=name;
+  if(save){try{localStorage.setItem(KEY,JSON.stringify({name,date:new Date().toLocaleString('es-PE'),rows}))}catch(e){}}
+  $('welcome').classList.add('hide');$('app').classList.remove('hide');
+  $('fileinfo').textContent='📄 '+name;
+  sel={mes:'',anio:'',ut:'',esp:'',bloque:''};$('q').value='';
+  buildFilters();update();
+}
+function loadFile(f){
+  const r=new FileReader();
+  r.onload=e=>{const d=readWorkbook(new Uint8Array(e.target.result));if(d){setData(d,f.name,true);toast('✅ '+d.length+' registros cargados')}};
+  r.readAsArrayBuffer(f);$('file').value='';
+}
+
+/* ---------- interpretación de la búsqueda ---------- */
+function uniq(key){const m=new Map();rows.forEach(r=>{if(r[key])m.set(norm(r[key]),r[key])});return m}
+function parseQuery(q){
+  const R={val:{},tok:{},txt:[]},U={ut:uniq('ut'),bloque:uniq('bloque'),esp:uniq('esp')};
+  q.split(/\s+/).filter(Boolean).forEach(raw=>{
+    const clean=raw.replace(/,/g,''),t=norm(clean).replace(/\.$/,'');if(!t||STOP.has(t))return;
+    let k=null,v=null,m;
+    if(/^(19|20)\d\d$/.test(t)&&!R.val.anio){k='anio';v=t}
+    else if(/^\d+$/.test(t)&&R.val.pag==null){k='pag';v=+t}
+    else if(U.ut.has(t)&&!R.val.ut){k='ut';v=U.ut.get(t)}
+    else if(U.bloque.has(t)&&!R.val.bloque){k='bloque';v=U.bloque.get(t)}
+    else if(U.esp.has(t)&&!R.val.esp){k='esp';v=U.esp.get(t)}
+    else if(t.length>=3&&/^[A-Z]+$/.test(t)&&!R.val.mes&&(m=MES.find(x=>x.startsWith(t)||(t==='SET'&&x==='SEPTIEMBRE')))){k='mes';v=m}
+    if(k){R.val[k]=v;R.tok[k]=clean}else R.txt.push(t);
+  });
+  return R;
+}
+const E=()=>({mes:P.val.mes||sel.mes,anio:P.val.anio||sel.anio,ut:P.val.ut||sel.ut,esp:P.val.esp||sel.esp,bloque:P.val.bloque||sel.bloque,pag:P.val.pag});
+
+function removeToken(tok){$('q').value=$('q').value.split(/\s+/).filter(p=>p.replace(/,/g,'')!==tok).join(' ')}
+function setSel(k,v){
+  if(P.tok[k]){removeToken(P.tok[k]);sel[k]=P.val[k]===v?'':v}
+  else sel[k]=sel[k]===v?'':v;
+  update();
+}
+
+/* ---------- filtros visibles ---------- */
+function opts(el,vals,key,labelFn){
+  $(el).innerHTML=vals.map(v=>`<button class="opt" data-k="${key}" data-v="${esc(v)}">${esc(labelFn?labelFn(v):v)}</button>`).join('');
+}
+function buildFilters(){
+  const has=k=>new Set(rows.map(r=>r[k]));
+  const mes=has('mes');
+  $('fMes').innerHTML=MES.map(m=>`<button class="opt${mes.has(m)?'':' off'}" data-k="mes" data-v="${m}">${m.slice(0,3)}</button>`).join('');
+  const sortN=(a,b)=>String(a).localeCompare(String(b),'es',{numeric:true});
+  opts('fAnio',[...has('anio')].filter(Boolean).sort(),'anio');
+  opts('fUt',[...has('ut')].filter(Boolean).sort(sortN),'ut');
+  opts('fEsp',[...has('esp')].filter(Boolean).sort(sortN),'esp');
+  $('fBloque').innerHTML='<option value="">Todos</option>'+[...has('bloque')].filter(Boolean).sort(sortN).map(b=>`<option>${esc(b)}</option>`).join('');
+}
+function paintFilters(e){
+  document.querySelectorAll('.opt[data-k]').forEach(b=>b.classList.toggle('on',e[b.dataset.k]===b.dataset.v));
+  $('fBloque').value=e.bloque||'';
+}
+
+/* ---------- render ---------- */
+function hl(x,p){if(p==null)return esc(x.rango);return x.segs.map(s=>{const t=s[0]===s[1]?s[0]:`${s[0]} al ${s[1]}`;return p>=s[0]&&p<=s[1]?`<mark>${t}</mark>`:t}).join(' / ')}
+function update(){
+  if(!rows.length)return;
+  P=parseQuery($('q').value);const e=E();
+  cur=rows.filter(x=>(!e.mes||x.mes===e.mes)&&(!e.anio||x.anio===e.anio)&&(!e.ut||x.ut===e.ut)&&(!e.esp||x.esp===e.esp)&&(!e.bloque||x.bloque===e.bloque)&&
+    (e.pag==null||x.segs.some(s=>e.pag>=s[0]&&e.pag<=s[1]))&&
+    P.txt.every(t=>norm(x.prot+' '+x.file+' '+x.linkTxt).includes(t)));
+  shown=48;
+  const lab={mes:'📅',anio:'🗓',ut:'🏗',bloque:'🧱',esp:'🔧'};
+  let ch=Object.keys(P.val).map(k=>`<span class="chip">${k==='pag'?'📄 Pág. '+P.val[k]:lab[k]+' '+esc(P.val[k])}<i data-x="${esc(P.tok[k])}">×</i></span>`);
+  ch=ch.concat(P.txt.map(t=>`<span class="chip">🔤 ${esc(t)}</span>`));
+  $('chips').innerHTML=ch.join('');
+  paintFilters(e);kpis();bars(e);draw(e);
+}
+function kpis(){
+  const L=rows.filter(r=>r.href).length;
+  $('kpis').innerHTML=[[rows.length,'registros'],[L,'con documento'],[new Set(rows.map(r=>r.mes+r.anio)).size,'meses con datos'],[new Set(rows.map(r=>r.bloque)).size,'bloques']]
+    .map(([n,t])=>`<div class="kpi"><b>${n}</b><span>${t}</span></div>`).join('');
+}
+function bars(e){
+  const cnt=(key,order)=>{const m={};rows.forEach(r=>{if(r[key])m[r[key]]=(m[r[key]]||0)+1});return (order||Object.keys(m).sort()).filter(k=>m[k]).map(k=>[k,m[k]])};
+  const block=(title,data,key)=>{const mx=Math.max(1,...data.map(d=>d[1]));
+    return `<div><b>${title}</b>${data.map(([k,n])=>`<div class="bar${e[key]===k?' on':''}" data-k="${key}" data-v="${esc(k)}"><span>${esc(k)}</span><span class="t"><i style="width:${n/mx*100}%"></i></span><span>${n}</span></div>`).join('')}</div>`};
+  $('bars').innerHTML=block('Por mes',cnt('mes',MES),'mes')+block('Por especialidad',cnt('esp'),'esp')+block('Por UT',cnt('ut'),'ut');
+}
+function draw(e){
+  $('count').textContent=cur.length+(cur.length===1?' resultado':' resultados')+' de '+rows.length;
+  const list=cur.slice(0,shown);
+  $('more').classList.toggle('hide',cur.length<=shown);
+  if(!cur.length){$('results').innerHTML='<div class="card empty">😕 No encontré nada con esos filtros.<br><br><button id="clear2">Limpiar y empezar de nuevo</button></div>';return}
+  if(view==='cards'){
+    $('results').innerHTML='<div class="grid">'+list.map((x,i)=>`<article class="cd">
+      <div class="ct"><h3>${esc(x.prot)}</h3><span class="tag m">${esc(x.mes)} ${esc(x.anio)}</span></div>
+      <div class="tags"><span class="tag">${esc(x.ut)}</span><span class="tag">Bloque ${esc(x.bloque)}</span><span class="tag e">${esc(x.esp)}</span></div>
+      <div class="pg">📄 Páginas: <span class="rg">${hl(x,e.pag)}</span></div>
+      <div class="nm">${esc(x.linkTxt||x.file)}</div>
+      <div class="ac">${x.href?`<a class="btn pri" href="${esc(x.href)}" target="_blank" rel="noopener">Abrir documento ↗</a><button data-i="${i}" data-w="href">🔗 Copiar enlace</button>`:'<span class="mut">Sin enlace</span>'}<button data-i="${i}" data-w="name">📋 Copiar nombre</button></div>
+    </article>`).join('')+'</div>';
+  }else{
+    $('results').innerHTML='<div class="tw"><table><colgroup>'+[4,5,8,14,7,5,10,23.5,23.5].map(w=>`<col style="width:${w}%">`).join('')+'</colgroup><thead><tr>'+['UT','Bloque','Esp.','Protocolo','Mes','Año','Páginas','Link','Archivo'].map(h=>`<th>${h}</th>`).join('')+'</tr></thead><tbody>'+
+    list.map((x,i)=>`<tr><td>${esc(x.ut)}</td><td>${esc(x.bloque)}</td><td>${esc(x.esp)}</td><td>${esc(x.prot)}</td><td>${esc(x.mes)}</td><td>${esc(x.anio)}</td><td class="rg">${hl(x,e.pag)}</td>
+    <td>${esc(x.linkTxt)}${x.href?`<br><a class="btn pri" style="padding:3px 10px;font-size:12px" href="${esc(x.href)}" target="_blank" rel="noopener">Abrir ↗</a>`:''}</td>
+    <td>${esc(x.file)} <button data-i="${i}" data-w="name" style="padding:2px 8px;font-size:12px">Copiar</button></td></tr>`).join('')+'</tbody></table></div>';
+  }
+}
+
+/* ---------- eventos ---------- */
+$('pick').onclick=$('change').onclick=()=>$('file').click();
+$('file').onchange=e=>e.target.files[0]&&loadFile(e.target.files[0]);
+$('q').addEventListener('input',update);
+$('more').onclick=()=>{shown+=48;draw(E())};
+const clearAll=()=>{sel={mes:'',anio:'',ut:'',esp:'',bloque:''};$('q').value='';update()};
+$('clear').onclick=clearAll;
+document.addEventListener('click',e=>{
+  const o=e.target.closest('[data-k]');
+  if(o&&o.dataset.k){if(o.classList.contains('off'))return;setSel(o.dataset.k,o.dataset.v);return}
+  const x=e.target.closest('[data-x]');if(x){removeToken(x.dataset.x);update();return}
+  const c=e.target.closest('[data-w]');
+  if(c){const r=cur[+c.dataset.i];navigator.clipboard.writeText(c.dataset.w==='href'?r.href:(r.linkTxt||r.file)).then(()=>toast('Copiado ✓'));return}
+  if(e.target.id==='clear2')clearAll();
+});
+$('fBloque').onchange=e=>{const v=e.target.value;if(P.tok.bloque){removeToken(P.tok.bloque)}sel.bloque=v;update()};
+$('vCards').onclick=()=>{view='cards';$('vCards').classList.add('on');$('vTable').classList.remove('on');draw(E())};
+$('vTable').onclick=()=>{view='table';$('vTable').classList.add('on');$('vCards').classList.remove('on');draw(E())};
+$('pdf').onclick=()=>{shown=cur.length;draw(E());setTimeout(()=>window.print(),100)};
+$('xls').onclick=()=>{
+  const data=cur.map(x=>({UT:x.ut,Bloque:x.bloque,Especialidad:x.esp,Protocolo:x.prot,Mes:x.mes,'Año':x.anio,'Páginas':x.rango,Link:x.linkTxt,Hipervinculo:x.href,Archivo:x.file}));
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(data),'Resultados');
+  XLSX.writeFile(wb,'resultados_busqueda.xlsx');
+};
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();$('q').focus()}});
+['dragover','dragenter'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();document.body.classList.add('dragging')}));
+['dragleave','drop'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();document.body.classList.remove('dragging')}));
+document.addEventListener('drop',e=>e.dataTransfer.files[0]&&loadFile(e.dataTransfer.files[0]));
+
+/* ---------- último archivo guardado ---------- */
+try{
+  const s=JSON.parse(localStorage.getItem(KEY)||'null');
+  if(s&&s.rows&&s.rows.length){
+    const b=$('saved');b.classList.remove('hide');
+    b.innerHTML=`<div class="mut">Último archivo: <b>${esc(s.name)}</b> (${esc(s.date)})</div><button class="pri" id="useSaved" style="margin-top:8px">⚡ Usar el último archivo (${s.rows.length} registros)</button>`;
+    $('useSaved').onclick=()=>setData(s.rows,s.name,false);
+  }
+}catch(e){}
+</script>
+</body>
+</html>
