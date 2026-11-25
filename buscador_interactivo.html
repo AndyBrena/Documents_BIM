@@ -358,7 +358,7 @@ try{
   }
 }catch(e){}
 /* ---------- carga automática del Excel alojado en GitHub ---------- */
-const EXCEL_URL='MATRIZ_1_optimizada.xlsx';
+const EXCEL_URL='MATRIZ_1.xlsx';
 (async function autoCargar(){
   try{
     const r=await fetch(EXCEL_URL+'?v='+Date.now(),{cache:'no-store'});
